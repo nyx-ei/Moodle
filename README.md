@@ -1,48 +1,122 @@
-# Moodle
+# Moodle 
 
-<p align="center"><a href="https://moodle.org" target="_blank" title="Moodle Website">
-  <img src="https://raw.githubusercontent.com/moodle/moodle/main/.github/moodlelogo.svg" alt="The Moodle Logo">
-</a></p>
+## Overview
 
-[Moodle][1] is the World's Open Source Learning Platform, widely used around the world by countless universities, schools, companies, and all manner of organisations and individuals.
+This project aims to set up and customize an instance of Moodle, an open-source online learning platform. Moodle allows you to create rich and interactive learning environments adapted to a variety of educational contexts..
 
-Moodle is designed to allow educators, administrators and learners to create personalised learning environments with a single robust, secure and integrated system.
+---
 
-## Documentation
+## Installation
 
-- Read our [User documentation][3]
-- Discover our [developer documentation][5]
-- Take a look at our [demo site][4]
+### Prerequisites
 
-## Community
+- .NET 5.0 or higher
+- Web server: Apache, Nginx or other compatible server.
+- Database: MySQL, PostgreSQL, MariaDB, or other compatible DBMS.
+- PHP: Version compatible with Moodle (see the official documentation for specific versions).
 
-[moodle.org][1] is the central hub for the Moodle Community, with spaces for educators, administrators and developers to meet and work together.
+### Steps
 
-You may also be interested in:
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/nyx-ei/moodle.git  
+    ```
+    
+2. Navigate to the project directory:
+    ```bash
+    cd Moodle
+    ```
 
-- attending a [Moodle Moot][6]
-- our regular series of [developer meetings][7]
-- the [Moodle User Association][8]
+3. Restore NuGet packages:
+    ```bash
+    dotnet restore
+    ```
 
-## Installation and hosting
+4. Build and run the application:
+    ```bash
+    dotnet run
+    ```
 
-Moodle is Free, and Open Source software. You can easily [download Moodle][9] and run it on your own web server, however you may prefer to work with one of our experienced [Moodle Partners][10].
+---
 
-Moodle also offers hosting through both [MoodleCloud][11], and our [partner network][10].
+## Features
+
+ - Installing Moodle: A step-by-step guide to installing Moodle on a web server.
+ - Customization: Instructions to customize the look and functionality of Moodle using themes and plugins.
+ - Security: Best practices to secure your Moodle instance.
+ - User Management: Tutorials on managing user roles and permissions.
+ - Courses and content: Advice on creating and managing courses, activities and educational resources.
+ - Integration: Integration with other educational systems and tools.
+
+---
+
+## Usage
+
+Refer to the [User Guide](docs/UserGuide.md) for a comprehensive overview on how to use AutoPM.
+
+---
+
+## Contributing
+
+Contributions from the community are welcome! Please read our [Contributing Guide](docs/CONTRIBUTING.md) to get started.
+
+---
 
 ## License
 
-Moodle is provided freely as open source software, under version 3 of the GNU General Public License. For more information on our license see
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-[1]: https://moodle.org
-[2]: https://moodle.com
-[3]: https://docs.moodle.org/
-[4]: https://sandbox.moodledemo.net/
-[5]: https://moodledev.io
-[6]: https://moodle.com/events/mootglobal/
-[7]: https://moodledev.io/general/community/meetings
-[8]: https://moodleassociation.org/
-[9]: https://download.moodle.org
-[10]: https://moodle.com/partners
-[11]: https://moodle.com/cloud
-[12]: https://moodledev.io/general/license
+---
+
+## Acknowledgements
+
+- The Learning Management System (LMS) architecture
+- 
+
+---
+
+For support or queries, feel free to reach out to us at help@nyx-ei.tech.
+
+---
+
+For any queries or support, please reach out to us at help@nyx-ei.tech
+
+---
+# Code conventions
+## Namespaces
+The universal namespace prefix is Moodle. For every class the namespace should respect this structure:
+```
+Moodle.feature-family.feature.service
+```
+- **feature-family** is related to how the feature was designed.
+- **feature** is the feature associated to your service.
+- **service** is the service associated to your class.
+
+_If you have any question related to namespaces convention, feel free to reach out to us at help@nyx-ei.tech._
+
+---
+# Architecture
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
