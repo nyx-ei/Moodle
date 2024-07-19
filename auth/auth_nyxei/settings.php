@@ -18,4 +18,12 @@ if ($ADMIN->fulltree) {
         '',
         PARAM_RAW
     ));
+
+    $settings->add(new admin_setting_configtext(
+        'auth_nyxei/login_attempts',
+        get_string('login_attempts', 'auth_nyxei'),
+        get_string('login_attempts_desc', 'auth_nyxei'),
+        '',
+        PARAM_INT
+    ));
 }
