@@ -1,6 +1,5 @@
 <?php
 
-//TODO: securisation de la conexion via AD en utilisant le protocole LDAPS
 //TODO: Synchronisation des utilisateurs AD et Moodle
 //TODO: Gestion des permissions d'utilisateur via AD
 //TODO: Desactiver les autres methodes d'authentification afin que seule la connexion via AD soit possible.
@@ -29,6 +28,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
     }
 
     public function user_login($username, $password) {
+        // global $DB;
 
         $ldap_host = $this->config->host;
         $ldap_port = 636;
@@ -36,7 +36,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
         $ldap_connection = ldap_connect("ldaps://{$ldap_host}", $ldap_port);
 
         if (!$ldap_connection) {
-            
+            $this->failed_login_log($username, 'Could not connect to LDAP server');
             error_log('Could not connect to LDAP server.');
             return false;
         }
@@ -50,6 +50,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
             ldap_unbind($ldap_connection);
             return true;
         }else {
+            $this->failed_login_log($username, 'Invalid Credentials');
             ldap_unbind($ldap_connection);
             return false;
         }
@@ -73,13 +74,59 @@ class auth_plugin_nyxei extends auth_plugin_base {
     public function process_config($config)
     {
         if (!isset($config->host)) {
-            # code...
+
             $config->host = '';
         }
 
+        if (!isset($config->login_attempts)) {
+            
+            $config->login_attempts = 3; // default value
+        }
+
         set_config('host', $config->host, 'auth_nyxei');
+        set_config('login_attempts', $config->login_attempts, 'auth_nyxei');
 
         return true;
     }
 
+   //save attempts login
+    private function failed_login_log($username, $error)
+    {
+        global $DB;
+
+        $record = new stdClass();
+        $record->username = $username;
+        $record->timestamp = time();
+        $record->error = $error;
+
+        $DB->insert_record('auth_nyxei_failed_logins', $record);
+
+        $this->check_failed_attempts($username);
+    }
+
+    private function check_failed_attempts($username)
+    {
+        global $DB, $CFG;
+
+        $attempts = $DB->get_records_select('auth_nyxei_failed_logins', 'username = ?', array($username));
+        $attempt_count = count($attempts);
+
+        if ($attempt_count >= $this->config->login_attempts) {
+            
+            $this->send_admin_notification($username, $attempt_count);
+        }
+    }
+
+    private function send_admin_notification($username, $attempt_count)
+    {
+        global $CFG;
+
+        $admin = get_admin();
+        $subject = "Alert: Multiple Failed Login Attempts";
+        $message = "User {$username} has had {$attempt_count} failed login attempts";
+
+        email_to_user($admin, $admin, $subject, $message);
+    }
+
+    
 }
