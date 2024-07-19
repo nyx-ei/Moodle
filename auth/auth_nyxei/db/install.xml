@@ -1,5 +1,5 @@
 <?xml version="1.0" enconding="utf-8"?>
-<XMLDB PATH="auth/auth_nyxei/db" VERSION="2024071900" COMMENT="XMLDB file for auth_nyxei">
+<XMLDB PATH="auth/auth_nyxei/db" VERSION="2024071800" COMMENT="XMLDB file for auth_nyxei">
     <TABLE>
         <TABLE NAME="auth_nyxei_failed_logins" COMMENT="Table to store failed login">
             <FIELDS>
