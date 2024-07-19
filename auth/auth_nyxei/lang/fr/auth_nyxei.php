@@ -11,3 +11,5 @@ $string['pluginname'] = 'Authentification AD';
 $string['auth_nyxeidescription'] = 'Ce plugin permet l\'authentification avec un serveur AD.';
 $string['host'] = 'Nom d\'hôte AD';
 $string['host_desc'] = 'Nom d\'hôte ou adresse IP du serveur AD.';
+$string['login_attempts'] = 'Nombre de tentatives de connexion';
+$string['login_attempts_desc'] ='Nombre de tentatives de connexion échouées avant l\'envoi d\'une alerte à l\'administrateur.';
