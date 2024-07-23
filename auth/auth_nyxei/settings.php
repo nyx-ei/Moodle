@@ -32,18 +32,14 @@ if ($ADMIN->fulltree) {
         get_string('bind_user', 'auth_nyxei'),
         get_string('bind_user_desc', 'auth_nyxei'),
         '',
-        PARAM_RAW
-    ));
-
-    $settings->add(new admin_setting_configtext(
-        'auth_nyxei/bind_password',
-        get_string('bind_password', 'auth_nyxei'),
-        get_string('bind_password_desc', 'auth_nyxei'),
-        '',
-        PARAM_RAW
+        PARAM_TEXT
     ));
 
     $settings->add(new admin_setting_configpasswordunmask(
         'auth_nyxei/bind_password',
+        get_string('bind_password', 'auth_nyxei'),
+        get_string('bind_password_desc', 'auth_nyxei'),
+        '',
     ));
+
 }
