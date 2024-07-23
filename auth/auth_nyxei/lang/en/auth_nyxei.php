@@ -17,3 +17,5 @@ $string['bind_user'] = 'Bind User';
 $string['bind_user_desc'] = 'The user to bind to the Active Directory server.';
 $string['bind_password'] = 'Bind Password';
 $string['bind_password_desc'] = 'The password to bind to the Active Directory server.';
+$string['sync_users'] = 'Synchronize Users';
+$string['sync_users_desc'] = 'Synchronize users from LDAP to moodle.';

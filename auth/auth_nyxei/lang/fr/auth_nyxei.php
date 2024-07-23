@@ -17,3 +17,5 @@ $string['bind_user'] = 'Utilisateur bind';
 $string['bind_user_desc'] = 'Utilisateur binaire pour l\'authentification du serveur AD.';
 $string['bind_password'] = 'Mot de passe bind';
 $string['bind_password_desc'] = 'Mot de passe binaire pour l\'authentification du serveur AD.';
+$string['sync_users'] = 'Synchroniser les utilisateurs';
+$string['sync_users_desc'] = 'Synchroniser les utilisateurs du serveur AD vers moodle.';

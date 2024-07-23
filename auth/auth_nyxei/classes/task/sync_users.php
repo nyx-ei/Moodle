@@ -1,6 +1,5 @@
 <?php
 
-//TODO: decommenter le $auth->sync_users();
 
 /**
  * A scheduled task for LDAP users sync.
@@ -25,6 +24,6 @@ class sync_users extends \core\task\scheduled_task {
     public function execute() 
     {
         $auth  = get_auth_plugin('nyxei');
-        // $auth->sync_users();
+        $auth->sync_users();
     }
 }
