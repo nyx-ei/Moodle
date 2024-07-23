@@ -128,5 +128,6 @@ class auth_plugin_nyxei extends auth_plugin_base {
         email_to_user($admin, $admin, $subject, $message);
     }
 
+    public function sync_users(){}
     
 }
