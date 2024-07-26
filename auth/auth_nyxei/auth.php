@@ -2,7 +2,6 @@
 
 //TODO: Synchronisation des utilisateurs AD et Moodle
 //TODO: Gestion des permissions d'utilisateur via AD
-//TODO: Desactiver les autres methodes d'authentification afin que seule la connexion via AD soit possible.
 
 
 /**
@@ -18,7 +17,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/authlib.php');
+
 
 class auth_plugin_nyxei extends auth_plugin_base {
 
@@ -73,18 +72,30 @@ class auth_plugin_nyxei extends auth_plugin_base {
 
     public function process_config($config)
     {
-        if (!isset($config->host)) {
+        if (empty($config->host)) {
 
             $config->host = '';
         }
 
-        if (!isset($config->login_attempts)) {
+        if (empty($config->login_attempts)) {
             
             $config->login_attempts = 3; // default value
         }
 
+        if (empty($config->bind_user)) {
+            
+            $config->bind_user = '';
+        }
+
+        if (empty($config->bind_password)) {
+            
+            $config->bind_password = '';
+        }
+
         set_config('host', $config->host, 'auth_nyxei');
         set_config('login_attempts', $config->login_attempts, 'auth_nyxei');
+        set_config('bind_user', $config->bind_user, 'auth_nyxei');
+        set_config('bind_password', $config->bind_password, 'auth_nyxei');
 
         return true;
     }
@@ -128,5 +139,80 @@ class auth_plugin_nyxei extends auth_plugin_base {
         email_to_user($admin, $admin, $subject, $message);
     }
 
+    public function sync_users() {
+        global $DB, $CFG;
+    
+        $ldap_host = $this->config->host;
+        $ldap_port = 636;
+        $bind_user = $this->config->bind_user;
+        $bind_password = $this->config->bind_password;
+    
+        $ldap_connection = ldap_connect("ldaps://{$ldap_host}", $ldap_port);
+    
+        if (!$ldap_connection) {
+            error_log('Could not connect to LDAP server.');
+            return false;
+        }
+    
+        ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+        ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, 0);
+    
+        $ldap_bind = ldap_bind($ldap_connection, $bind_user, $bind_password);
+    
+        if (!$ldap_bind) {
+            $error = ldap_error($ldap_connection);
+            ldap_unbind($ldap_connection);
+            error_log("Could not bind to LDAP server: $error.");
+            return false;
+        }
+    
+        $search = ldap_search($ldap_connection, "dc=nyx-ei,dc=tech", "(objectClass=*)");
+        $entries = ldap_get_entries($ldap_connection, $search);
+    
+        if ($entries === false) {
+            $error = ldap_error($ldap_connection);
+            ldap_unbind($ldap_connection);
+            error_log("LDAP search failed: $error.");
+            return false;
+        }
+    
+        $ad_usernames = [];
+        foreach ($entries as $entry) {
+            if (!empty($entry['samaccountname'][0])) {
+                $username = $entry['samaccountname'][0];
+                $ad_usernames[] = $username;
+    
+                if (!$DB->record_exists('user', ['username' => $username])) {
+                    $user = new stdClass();
+                    $user->username = $username;
+                    $user->firstname = $entry['givenname'][0] ?? '';
+                    $user->lastname = $entry['sn'][0] ?? '';
+                    $user->email = $entry['mail'][0] ?? '';
+                    $user->auth = 'auth_nyxei';
+                    $user->confirmed = 1;
+                    $user->mnethostid = $CFG->mnet_localhost_id;
+    
+                    $DB->insert_record('user', $user);
+                }
+    
+                if (isset($entry['useraccountcontrol'][0]) && ($entry['useraccountcontrol'][0] & 2)) {
+                    $user = $DB->get_record('user', ['username' => $username]);
+                    $user->suspended = 1;
+                    $DB->update_record('user', $user);
+                }
+            }
+        }
+    
+        $users = $DB->get_records('user', ['auth' => 'auth_nyxei']);
+        foreach ($users as $user) {
+            if (!in_array($user->username, $ad_usernames)) {
+                $user->suspended = 1;
+                $DB->update_record('user', $user);
+            }
+        }
+    
+        ldap_unbind($ldap_connection);
+        return true;
+    }    
     
 }
