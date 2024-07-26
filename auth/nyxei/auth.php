@@ -1,8 +1,6 @@
 <?php
 
-//TODO: Synchronisation des utilisateurs AD et Moodle
 //TODO: Gestion des permissions d'utilisateur via AD
-
 
 /**
  * Active directory Authentification plugin
