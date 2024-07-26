@@ -13,7 +13,7 @@ namespace auth_nyxei\task;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/auth/auth_nyxei/auth.php');
+require_once($CFG->dirroot.'/auth/nyxei/auth.php');
 
 class sync_users extends \core\task\scheduled_task {
     public function get_name()
