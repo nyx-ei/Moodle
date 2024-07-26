@@ -12,7 +12,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = array(
     array(
-        'classname' => 'auth_nyxei\task\sync_users',
+        'classname' => 'nyxei\task\sync_users',
         'blocking' => 0,
         'minute' => '*/30',
         'hour' => '*',
