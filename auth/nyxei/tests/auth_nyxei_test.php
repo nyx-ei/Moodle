@@ -13,7 +13,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/auth/nyxei/auth.php');
 
-class auth_nyxei_testcase extends \advanced_testcase
+class auth_nyxei_test extends \advanced_testcase
 {
     protected function setUp(): void
     {
