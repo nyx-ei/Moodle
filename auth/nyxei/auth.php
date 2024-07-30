@@ -121,7 +121,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
         $attempt_count = count($attempts);
 
         if ($attempt_count >= $this->config->login_attempts) {
-            
+             
             $this->send_admin_notification($username, $attempt_count);
         }
     }
