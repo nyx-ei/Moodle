@@ -19,6 +19,11 @@ defined('MOODLE_INTERNAL') || die();
 
 class auth_plugin_nyxei extends auth_plugin_base {
 
+    const LDAP_PROTOCOL_VERSION = 3;
+    const LDAP_PORT = 636;
+    const LDAP_REFERRALS = 0;
+    const LOGIN_ATTEMPTS =  3;
+
     public function __construct() {
         $this->authtype = 'nyxei';
         $this->config = get_config('auth_nyxei');
@@ -28,7 +33,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
         // global $DB;
 
         $ldap_host = $this->config->host;
-        $ldap_port = 636;
+        $ldap_port = self::LDAP_PORT;
 
         $ldap_connection = ldap_connect("ldaps://{$ldap_host}", $ldap_port);
 
@@ -38,8 +43,8 @@ class auth_plugin_nyxei extends auth_plugin_base {
             return false;
         }
 
-        ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-        ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, self::LDAP_PROTOCOL_VERSION);
+        ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, self::LDAP_REFERRALS);
 
         $ldap_bind = @ldap_bind($ldap_connection, $username, $password);
 
@@ -77,7 +82,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
 
         if (empty($config->login_attempts)) {
             
-            $config->login_attempts = 3; // default value
+            $config->login_attempts = self::LOGIN_ATTEMPTS; // default value
         }
 
         if (empty($config->bind_user)) {
@@ -141,7 +146,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
         global $DB, $CFG;
     
         $ldap_host = $this->config->host;
-        $ldap_port = 636;
+        $ldap_port = self::LDAP_PORT;
         $bind_user = $this->config->bind_user;
         $bind_password = $this->config->bind_password;
     
@@ -152,8 +157,8 @@ class auth_plugin_nyxei extends auth_plugin_base {
             return false;
         }
     
-        ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-        ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, self::LDAP_PROTOCOL_VERSION);
+        ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, self::LDAP_REFERRALS);
     
         $ldap_bind = ldap_bind($ldap_connection, $bind_user, $bind_password);
     
