@@ -1,8 +1,6 @@
 <?php
 
-//TODO: Synchronisation des utilisateurs AD et Moodle
 //TODO: Gestion des permissions d'utilisateur via AD
-
 
 /**
  * Active directory Authentification plugin
@@ -46,11 +44,11 @@ class auth_plugin_nyxei extends auth_plugin_base {
         $ldap_bind = @ldap_bind($ldap_connection, $username, $password);
 
         if ($ldap_bind) {
-            ldap_unbind($ldap_connection);
+            $this->close_ldap_connection($ldap_connection);
             return true;
         }else {
             $this->failed_login_log($username, 'Invalid Credentials');
-            ldap_unbind($ldap_connection);
+            $this->close_ldap_connection($ldap_connection);
             return false;
         }
     }
@@ -123,7 +121,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
         $attempt_count = count($attempts);
 
         if ($attempt_count >= $this->config->login_attempts) {
-            
+             
             $this->send_admin_notification($username, $attempt_count);
         }
     }
@@ -161,7 +159,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
     
         if (!$ldap_bind) {
             $error = ldap_error($ldap_connection);
-            ldap_unbind($ldap_connection);
+            $this->close_ldap_connection($ldap_connection);
             error_log("Could not bind to LDAP server: $error.");
             return false;
         }
@@ -171,7 +169,7 @@ class auth_plugin_nyxei extends auth_plugin_base {
     
         if ($entries === false) {
             $error = ldap_error($ldap_connection);
-            ldap_unbind($ldap_connection);
+            $this->close_ldap_connection($ldap_connection);
             error_log("LDAP search failed: $error.");
             return false;
         }
@@ -211,8 +209,18 @@ class auth_plugin_nyxei extends auth_plugin_base {
             }
         }
     
-        ldap_unbind($ldap_connection);
+        $this->close_ldap_connection($ldap_connection);
         return true;
-    }    
+    }
+    
+    /**
+     * Closes the LDAP connection.
+     * 
+     * @param $ldap_connection
+     * @return void
+     */
+    private function close_ldap_connection($ldap_connection) {
+        ldap_unbind($ldap_connection);
+    }
     
 }
