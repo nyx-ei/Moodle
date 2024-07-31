@@ -37,7 +37,6 @@ class auth_plugin_nyxei extends auth_plugin_base
 
     public function user_login($username, $password)
     {
-        // global $DB;
 
         $ldap_host = $this->config->host;
         $ldap_port = self::LDAP_PORT;
@@ -129,7 +128,9 @@ class auth_plugin_nyxei extends auth_plugin_base
     {
         global $DB, $CFG;
 
-        $attempts = $DB->get_records_select('auth_nyxei_failed_logins', 'username = ?', array($username));
+        $username = $this->sanitize_username($username);
+
+        $attempts = $DB->get_records_select('auth_nyxei_failed_logins', 'username = :username', array('username' => $username));
         $attempt_count = count($attempts);
 
         if ($attempt_count >= $this->config->login_attempts) {
@@ -267,7 +268,7 @@ class auth_plugin_nyxei extends auth_plugin_base
                         }
                     }
                 } else {
-                    error_log("Le rôle Moodle '$moodle_role' n'existe pas.");
+                    error_log("The Moodle role '$moodle_role' does not exist.");
                 }
             }
         }
@@ -286,5 +287,11 @@ class auth_plugin_nyxei extends auth_plugin_base
     private function close_ldap_connection($ldap_connection)
     {
         ldap_unbind($ldap_connection);
+    }
+
+    private function sanitize_username($username)
+    {
+        $username = trim($username);
+        return $username;
     }
 }
