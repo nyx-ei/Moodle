@@ -19,3 +19,5 @@ $string['bind_password'] = 'Bind Password';
 $string['bind_password_desc'] = 'The password to bind to the Active Directory server.';
 $string['sync_users'] = 'Synchronize Users';
 $string['sync_users_desc'] = 'Synchronize users from LDAP to moodle.';
+$string['ad_group_role_mappings'] = 'Active directory Group to Moodle Role Mappings';
+$string['ad_group_role_mappings_desc'] = 'Enter mappings in the format "AD Group Name:Moodle Role Shortname", one per line.';

@@ -42,4 +42,11 @@ if ($ADMIN->fulltree) {
         '',
     ));
 
+    $settings->add(new admin_setting_configtext(
+        'auth_nyxei/ad_group_role_mappings',
+        get_string('ad_group_role_mappings', 'auth_nyxei'),
+        get_string('ad_group_role_mappings_desc', 'auth_nyxei'),
+        '',
+        PARAM_TEXT
+    ));
 }
