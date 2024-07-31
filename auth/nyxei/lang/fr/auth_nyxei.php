@@ -19,3 +19,5 @@ $string['bind_password'] = 'Mot de passe bind';
 $string['bind_password_desc'] = 'Mot de passe binaire pour l\'authentification du serveur AD.';
 $string['sync_users'] = 'Synchroniser les utilisateurs';
 $string['sync_users_desc'] = 'Synchroniser les utilisateurs du serveur AD vers moodle.';
+$string['ad_group_role_mappings'] = 'Correspondance entre les groupes de l\'Active Directory et les rôles de Moodle';
+$string['ad_group_role_mappings_desc'] = 'Entrez les correspondances dans le format « Nom du groupe AD:Nom abrégé du rôle Moodle », une par ligne.';

@@ -11,9 +11,9 @@ declare(strict_types=1);
  */
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/auth/auth_nyxei/auth.php');
+require_once($CFG->dirroot.'/auth/nyxei/auth.php');
 
-class auth_nyxei_test extends advanced_testcase
+class auth_nyxei_test extends \advanced_testcase
 {
     protected function setUp(): void
     {
@@ -22,8 +22,6 @@ class auth_nyxei_test extends advanced_testcase
 
     public function test_successful_ldap_connection()
     {
-        global $CFG;
-
         set_config('host', 'ldap://your-ldap-server', 'auth_nyxei');
         set_config('bind_user', 'cn=admin,dc=example,dc=com', 'auth_nyxei');
         set_config('bind_password', 'password', 'auth_nyxei');
@@ -35,5 +33,19 @@ class auth_nyxei_test extends advanced_testcase
         
         $result = $auth->user_login($username, $password);
         $this->assertTrue($result);
+    }
+
+    public function test_failed_ldap_connection()
+    {
+        set_config('host', 'ldap://your-ldap-server', 'auth_nyxei');
+        set_config('bind_user', 'cn=admin,dc=example,dc=com', 'auth_nyxei');
+        set_config('bind_password', 'password', 'auth_nyxei');
+
+        $auth = new auth_plugin_nyxei();
+        $username = 'testuser';
+        $password = 'testpassword';
+
+        $result = $auth->user_login($username, $password);
+        $this->assertFalse($result);
     }
 }

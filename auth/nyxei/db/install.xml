@@ -1,6 +1,6 @@
-<?xml version="1.0" enconding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="auth/nyxei/db" VERSION="2024071800" COMMENT="XMLDB file for auth_nyxei">
-    <TABLE>
+    <TABLES>
         <TABLE NAME="auth_nyxei_failed_logins" COMMENT="Table to store failed login">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -12,5 +12,5 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
         </TABLE>
-    </TABLE>
+    </TABLES>
 </XMLDB>
