@@ -11,6 +11,8 @@
 
 namespace nyxei\task;
 
+global $CFG;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/auth/nyxei/auth.php');

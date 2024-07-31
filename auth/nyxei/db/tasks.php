@@ -16,9 +16,18 @@ $tasks = array(
         'blocking' => 0,
         'minute' => '*/30',
         'hour' => '*',
-        'dayofmonth' => '*',
-        'dayofweek' => '*',
+        'day' => '*',
         'month' => '*',
-        'wday' => '*'
+        'dayofweek' => '*',
+    ),
+
+    array(
+        'classname' => 'auth_nyxei\task\sync_ad_groups',
+        'blocking' => 0,
+        'minute' => '*/30',
+        'hour' => '*/6',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
     )
 );
