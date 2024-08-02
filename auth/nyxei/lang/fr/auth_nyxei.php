@@ -21,3 +21,7 @@ $string['sync_users'] = 'Synchroniser les utilisateurs';
 $string['sync_users_desc'] = 'Synchroniser les utilisateurs du serveur AD vers moodle.';
 $string['ad_group_role_mappings'] = 'Correspondance entre les groupes de l\'Active Directory et les rôles de Moodle';
 $string['ad_group_role_mappings_desc'] = 'Entrez les correspondances dans le format « Nom du groupe AD:Nom abrégé du rôle Moodle », une par ligne.';
+$string['dc_base'] = 'Base DN';
+$string['dc_base_desc'] = 'Entrez le DN de base pour la recherche LDAP exemple: "domaine".';
+$string['dc_domain'] = 'DN du domaine';
+$string['dc_domain_desc'] = 'Entrez le DN du domaine pour la recherche LDAP exemple: "com".';

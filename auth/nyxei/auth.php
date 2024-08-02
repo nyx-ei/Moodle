@@ -2,8 +2,6 @@
 
 // @todo ecrire un test pour la sysnchronisation des users
 // @todo ecrire un test pour la gestion des permissions
-// @todo implementation d'une classe pour le stockage des messages
-// @todo ajouter un parametre pour la configuration de "dc"
 
 /**
  * Active directory Authentification plugin
@@ -106,10 +104,22 @@ class auth_plugin_nyxei extends auth_plugin_base
             $config->bind_password = '';
         }
 
+        if (empty($config->dc_base)) {
+
+            $config->dc_base = '';
+        }
+
+        if (empty($config->dc_domain)) {
+
+            $config->dc_domain = '';
+        }
+
         set_config('host', $config->host, 'auth_nyxei');
         set_config('login_attempts', $config->login_attempts, 'auth_nyxei');
         set_config('bind_user', $config->bind_user, 'auth_nyxei');
         set_config('bind_password', $config->bind_password, 'auth_nyxei');
+        set_config('dc_base', $config->dc_base, 'auth_nyxei');
+        set_config('dc_domain', $config->dc_domain, 'auth_nyxei');
 
         return true;
     }
@@ -166,6 +176,9 @@ class auth_plugin_nyxei extends auth_plugin_base
         $ldap_port = self::LDAP_PORT;
         $bind_user = $this->config->bind_user;
         $bind_password = $this->config->bind_password;
+        $dc_base = $this->config->dc_base;
+        $dc_domian = $this->config->dc_domain;
+
 
         $ldap_connection = ldap_connect("ldaps://{$ldap_host}", $ldap_port);
 
@@ -186,7 +199,8 @@ class auth_plugin_nyxei extends auth_plugin_base
             return false;
         }
 
-        $search = ldap_search($ldap_connection, "dc=nyx-ei,dc=tech", "(objectClass=*)");
+        $base_search = "$dc_base,$dc_domian";
+        $search = ldap_search($ldap_connection, $base_search, "(objectClass=*)");
         $entries = ldap_get_entries($ldap_connection, $search);
 
         if ($entries === false) {
@@ -253,10 +267,20 @@ class auth_plugin_nyxei extends auth_plugin_base
             throw new \moodle_exception('ldapbinderror', 'auth_nyxei');
         }
 
+        if (empty($this->config->dc_base) || empty($this->config->dc_domain)) {
+            throw new \moodle_exception('missingdcparameters', 'auth_nyxei');
+        }
+
+        $dc_base = $this->config->dc_base;
+        $dc_domain = $this->config->dc_domain;
+
         foreach ($mappings as $mapping) {
             list($ad_group, $moodle_role) = explode(':', $mapping);
 
-            $search = ldap_search($ldap_connection, "dc=nyx-ei,dc=tech", "(memberOf=cn=$ad_group,dc=nyx-ei,dc=tech)");
+            $base_dn = "$dc_base,$dc_domain";
+            $search_filter = "(memberOf=cn=$ad_group,$dc_domain)";
+
+            $search = ldap_search($ldap_connection, $base_dn, $search_filter);
             $entries = ldap_get_entries($ldap_connection, $search);
 
             if ($entries['count'] > 0) {
