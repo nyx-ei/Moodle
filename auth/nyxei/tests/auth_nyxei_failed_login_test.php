@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// @todo ammeliorer les noms des methodes pour les tets
+
 /**
  * Failed connection test
  * 

@@ -1,5 +1,9 @@
 <?php
 
+// @todo ecrire un test pour la sysnchronisation des users
+// @todo ecrire un test pour la gestion des permissions
+// @todo implementation d'une classe pour le stockage des messages
+// @todo ajouter un parametre pour la configuration de "dc"
 
 /**
  * Active directory Authentification plugin
@@ -16,6 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 // use core\context_system;
+use auth_nyxei\NotificationMessages;
 
 require_once($CFG->libdir .'/setuplib.php');
 require_once($CFG->libdir . '/moodlelib.php');
@@ -144,8 +149,11 @@ class auth_plugin_nyxei extends auth_plugin_base
         global $CFG;
 
         $admin = get_admin();
-        $subject = "Alert: Multiple Failed Login Attempts";
-        $message = "User {$username} has had {$attempt_count} failed login attempts";
+        $subject = NotificationMessages::getMessage('alert_message_login_failed');
+        $message = NotificationMessages::getMessage('failed_login_attempts_message', [
+            $username,
+            $attempt_count
+        ]);
 
         email_to_user($admin, $admin, $subject, $message);
     }
