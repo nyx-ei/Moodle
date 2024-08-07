@@ -9,7 +9,9 @@
  * @copyright  2024 Nyx-EI <help@nyx-ei.tech>
  */
 
-namespace auth_nyxei\task;
+namespace nyxei\task;
+
+global $CFG;
 
 defined('MOODLE_INTERNAL') || die();
 
