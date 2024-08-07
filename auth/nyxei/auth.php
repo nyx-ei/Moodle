@@ -1,8 +1,5 @@
 <?php
 
-// @todo ecrire un test pour la sysnchronisation des users
-// @todo ecrire un test pour la gestion des permissions
-
 /**
  * Active directory Authentification plugin
  * Authentification using LDAPS (Lightweight Directory Access Protocol)
@@ -22,7 +19,6 @@ use auth_nyxei\NotificationMessages;
 
 require_once($CFG->libdir .'/setuplib.php');
 require_once($CFG->libdir . '/moodlelib.php');
-// require_once($CFG->libdir . '/lib/contextlib.php');
 
 class auth_plugin_nyxei extends auth_plugin_base
 {
@@ -43,8 +39,9 @@ class auth_plugin_nyxei extends auth_plugin_base
 
         $ldap_host = $this->config->host;
         $ldap_port = self::LDAP_PORT;
+        $ldap_url = "ldaps://{$ldap_host}:{$ldap_port}";
 
-        $ldap_connection = ldap_connect("ldaps://{$ldap_host}", $ldap_port);
+        $ldap_connection = ldap_connect($ldap_url);
 
         if (!$ldap_connection) {
             $this->failed_login_log($username, 'Could not connect to LDAP server');
@@ -55,7 +52,7 @@ class auth_plugin_nyxei extends auth_plugin_base
         ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, self::LDAP_PROTOCOL_VERSION);
         ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, self::LDAP_REFERRALS);
 
-        $ldap_bind = @ldap_bind($ldap_connection, $username, $password);
+        $ldap_bind = ldap_bind($ldap_connection, $username, $password);
 
         if ($ldap_bind) {
             $this->close_ldap_connection($ldap_connection);

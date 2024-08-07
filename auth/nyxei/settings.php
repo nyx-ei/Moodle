@@ -65,5 +65,4 @@ if ($ADMIN->fulltree) {
         '',
         PARAM_RAW
     ));
-
 }
