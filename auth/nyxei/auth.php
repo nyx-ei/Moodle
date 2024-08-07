@@ -176,8 +176,9 @@ class auth_plugin_nyxei extends auth_plugin_base
         $dc_base = $this->config->dc_base;
         $dc_domian = $this->config->dc_domain;
 
+        $ldap_url = "ldaps://{$ldap_host}:{$ldap_port}";
 
-        $ldap_connection = ldap_connect("ldaps://{$ldap_host}", $ldap_port);
+        $ldap_connection = ldap_connect($ldap_url);
 
         if (!$ldap_connection) {
             error_log('Could not connect to LDAP server.');
@@ -249,7 +250,6 @@ class auth_plugin_nyxei extends auth_plugin_base
     public function sync_ad_groups_to_roles()
     {
         global $DB;
-
         
         $mappings = explode("\n", $this->config->ad_group_role_mappings);
         $mappings = array_filter(array_map('trim', $mappings));
