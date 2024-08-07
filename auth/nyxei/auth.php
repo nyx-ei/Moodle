@@ -253,9 +253,11 @@ class auth_plugin_nyxei extends auth_plugin_base
         
         $mappings = explode("\n", $this->config->ad_group_role_mappings);
         $mappings = array_filter(array_map('trim', $mappings));
+        $ldap_host = $this->config->host;
+        $ldap_url = "ldap://{$ldap_host}";
 
         
-        $ldap_connection = ldap_connect($this->config->host);
+        $ldap_connection = ldap_connect($ldap_url);
         ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, self::LDAP_PROTOCOL_VERSION);
         ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, self::LDAP_REFERRALS);
         ldap_start_tls($ldap_connection);
