@@ -23,7 +23,7 @@ if ($ADMIN->fulltree) {
         'auth_nyxei/login_attempts',
         get_string('login_attempts', 'auth_nyxei'),
         get_string('login_attempts_desc', 'auth_nyxei'),
-        '',
+        '3',
         PARAM_INT
     ));
 
@@ -42,4 +42,27 @@ if ($ADMIN->fulltree) {
         '',
     ));
 
+    $settings->add(new admin_setting_configtext(
+        'auth_nyxei/ad_group_role_mappings',
+        get_string('ad_group_role_mappings', 'auth_nyxei'),
+        get_string('ad_group_role_mappings_desc', 'auth_nyxei'),
+        '',
+        PARAM_TEXT
+    ));
+
+    $settings->add(new admin_setting_configtext(
+        'auth_nyxei/dc_base',
+        get_string('dc_base', 'auth_nyxei'),
+        get_string('dc_base_desc', 'auth_nyxei'),
+        '',
+        PARAM_RAW
+    ));
+
+    $settings->add(new admin_setting_configtext(
+        'auth_nyxei/dc_domain',
+        get_string('dc_domain', 'auth_nyxei'),
+        get_string('dc_domain_desc', 'auth_nyxei'),
+        '',
+        PARAM_RAW
+    ));
 }
